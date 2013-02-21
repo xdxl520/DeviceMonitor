@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+
+<Configure id="FileServer" class="org.eclipse.jetty.server.Server">
+
+	<Call name="addConnector">
+		<Arg>
+			<New class="org.eclipse.jetty.server.nio.SelectChannelConnector">
+				<Set name="port">80</Set>
+			</New>
+		</Arg>
+	</Call>
+
+	<New id="serviceHandlerList" class="org.eclipse.jetty.server.handler.HandlerList">
+		<Set name="handlers">
+			<Array type="org.eclipse.jetty.server.Handler">
+				<Item>
+					<New class="com.run.dm.jetty.MainContextHandler">
+						<Set name="contextPath">/devicemonitor</Set>
+						<Set name="compactPath">false</Set>
+					</New>
+				</Item>
+				<Item>
+					<New class="org.eclipse.jetty.server.handler.DefaultHandler"></New>
+				</Item>
+			</Array>
+		</Set>
+	</New>
+
+	<Set name="handler">
+		<New id="IPAccessHandler" class="org.eclipse.jetty.server.handler.IPAccessHandler">
+			<Set name="handler">
+				<Ref id="serviceHandlerList" />
+			</Set>
+			<Set name="white">
+				<Array type="String">
+					<Item></Item>
+				</Array>
+			</Set>
+			<Set name="black">
+				<Array type="String">
+					<Item>127.0.0.1</Item>
+				</Array>
+			</Set>
+		</New>
+	</Set>
+</Configure>
